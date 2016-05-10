@@ -1,0 +1,60 @@
+package com.viglle.carmanual.modules;
+
+import android.os.Bundle;
+import android.widget.Button;
+
+import com.viglle.carmanual.base.BaseActivity;
+import com.viglle.carmanual.widget.model.BaseViewModel;
+import com.viglle.carmanual.parsor.VgEventParsor;
+import com.viglle.carmanual.parsor.VgUIParsor;
+import com.viglle.carmanual.utils.AppUtil;
+import com.viglle.carmanual.utils.LogUtil;
+import com.viglle.carmanual.utils.net.HttpHandlerInterface;
+import com.viglle.carmanual.utils.net.HttpUtil;
+import com.viglle.carmanual.viewfactory.EventFactory;
+import com.viglle.carmanual.viewfactory.ViewFactory;
+
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+/**
+ * Created by Administrator on 2016/5/3.
+ */
+public class WelcomeActivity extends BaseActivity {
+//    private Map<Integer,BaseViewModel> mViewMap=new HashMap<>();
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        HttpUtil.httpGet(AppUtil.FIRST_URL, new HttpHandlerInterface() {
+            @Override
+            public void onSuccess(String data) {
+                JSONObject rootObj = null;
+                try {
+                    rootObj = new JSONObject(data);
+                    if (rootObj.getInt("retCode") != 101) {
+                        return;
+                    }
+                    JSONObject resultObj = rootObj.getJSONObject(DATA);
+                    String res_type=resultObj.getString(RES_TYPE);
+                    if(res_type.equals(RES_TYPE_1001)){
+                        JSONObject uiObj=resultObj.getJSONObject(UI);
+                        BaseViewModel treeModel = VgUIParsor.parserModel(mCtx, uiObj);
+                        setContentView(ViewFactory.createViewTree(mCtx, treeModel, mViewTreeBean));
+                    }else if(res_type.equals(RES_TYPE_1002)){
+                        JSONObject actionObj=resultObj.getJSONObject(ACTION_LINK);
+                        EventFactory.createActionLink(mCtx, new Button(mCtx), VgEventParsor.parsorActionLink(actionObj));
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, IOException e) {
+                LogUtil.log_e(e.toString());
+            }
+        });
+    }
+}
