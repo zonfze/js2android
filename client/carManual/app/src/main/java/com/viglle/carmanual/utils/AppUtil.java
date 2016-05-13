@@ -1,9 +1,12 @@
 package com.viglle.carmanual.utils;
 
 import android.content.Context;
-import android.support.annotation.VisibleForTesting;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.viglle.carmanual.utils.net.TwoValues;
+
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +15,8 @@ import java.util.regex.Pattern;
  */
 public class AppUtil {
 
-    public static String FIRST_URL="http://192.168.16.198:8082/?code=first";
+//    public static String FIRST_URL="http://192.168.16.198:8082/?code=welcome";
+    public static String FIRST_URL="http://192.168.16.198:8083/?code=welcomeUI";
 
     public static int screenWidth=0;//静态变量保存屏幕宽度
     public static int screenHeight=0;//静态变量保存屏幕高度
@@ -24,6 +28,16 @@ public class AppUtil {
     public static boolean isNumeric(String str) {
         Pattern pattern = Pattern.compile("[0-9]*");
         Matcher isNum = pattern.matcher(str);
+
+        if (isNum.matches()) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isMatcherStr(String rex,String data){
+        Pattern pattern = Pattern.compile(rex);
+        Matcher isNum = pattern.matcher(data);
 
         if (isNum.matches()) {
             return true;
@@ -128,6 +142,39 @@ public class AppUtil {
             return true;
         }
       return  false;
+    }
+
+    /**
+     * 构建　GET　请求参数
+     * @param url
+     * @param params
+     * @return
+     */
+    public static String buildCacheKey(String url,List<TwoValues<String,String>> params){
+        if(params==null||params.isEmpty()){
+            return "";
+        }
+        String limit="?";
+        StringBuffer stringBuffer=new StringBuffer();
+        for(TwoValues<String,String> model:params){
+            stringBuffer.append(limit).append(model.key).append("=").append(model.value);
+            limit="&";
+        }
+//        Log.i("getParamStr", "getParamStr=" + stringBuffer.toString());
+        return stringBuffer.toString();
+    }
+
+    /**
+     * 获取手机的IMEI
+     *
+     * @param context
+     * @return
+     */
+    public static String IMEI(Context context) {
+        TelephonyManager telephonyManager = (TelephonyManager) context
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        String IMEI = telephonyManager.getDeviceId();
+        return IMEI;
     }
 
 }

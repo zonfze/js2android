@@ -18,6 +18,17 @@ public abstract class BaseTextViewModel extends BaseViewModel{
     private String text_align="0";//文本对齐方式:1 左对齐;2 右对齐;0 居中对齐
     public static final String TEXT_ALIGN="text_align";
 
+    private String drawableLeft;
+    public static final String DRAWABLE_LEFT="drawableLeft";
+    private String drawableTop;
+    public static final String DRAWABLE_TOP="drawableTop";
+    private String drawableRight;
+    public static final String DRAWABLE_RIGHT="drawableRight";
+    private String drawableBottom;
+    public static final String DRAWABLE_BOTTOM="drawableBottom";
+    private String drawablePadding;
+    public static final String DRAWABLE_PADDING="drawablePadding";
+
 
 
 
@@ -74,5 +85,45 @@ public abstract class BaseTextViewModel extends BaseViewModel{
 
     public void setText_align(String text_align) {
         this.text_align = text_align;
+    }
+
+    public String getDrawableLeft() {
+        return drawableLeft;
+    }
+
+    public void setDrawableLeft(String drawableLeft) {
+        this.drawableLeft = drawableLeft;
+    }
+
+    public String getDrawableTop() {
+        return drawableTop;
+    }
+
+    public void setDrawableTop(String drawableTop) {
+        this.drawableTop = drawableTop;
+    }
+
+    public String getDrawableRight() {
+        return drawableRight;
+    }
+
+    public void setDrawableRight(String drawableRight) {
+        this.drawableRight = drawableRight;
+    }
+
+    public String getDrawableBottom() {
+        return drawableBottom;
+    }
+
+    public void setDrawableBottom(String drawableBottom) {
+        this.drawableBottom = drawableBottom;
+    }
+
+    public String getDrawablePadding() {
+        return drawablePadding;
+    }
+
+    public void setDrawablePadding(String drawablePadding) {
+        this.drawablePadding = drawablePadding;
     }
 }

@@ -1,36 +1,51 @@
 package com.viglle.carmanual.widget.layout;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
-import com.viglle.carmanual.modules.fragments.BaseFragment;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Administrator on 2016/5/9.
  */
 public class VgViewPager extends ViewPager{
+    private  boolean noScroll=false;
     public VgViewPager(Context context) {
-
         super(context);
+        if(Build.VERSION.SDK_INT>=11){
+//            setPageTransformer(true,new DepthPageTransformer());//添加ViewPager切换动画
+        }
     }
 
     public VgViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
+
+    public void setNoScroll(boolean noScroll) {
+        this.noScroll = noScroll;
+    }
+
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        return true;
-        return super.onInterceptTouchEvent(ev);
+    public boolean onTouchEvent(MotionEvent arg0) {
+
+        if (noScroll)
+            return false;
+        else
+            return super.onTouchEvent(arg0);
+    }
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent arg0) {
+        if (noScroll)
+            return false;
+        else
+            return super.onInterceptTouchEvent(arg0);
     }
 
     public void setDatas(FragmentManager fm,List<Fragment> list){////
@@ -38,7 +53,6 @@ public class VgViewPager extends ViewPager{
             return;
         }
         VgViewPagerAdapter adapter = new VgViewPagerAdapter(fm,list);
-
         this.setAdapter(adapter);
     }
 
@@ -55,10 +69,6 @@ public class VgViewPager extends ViewPager{
         public VgViewPagerAdapter(FragmentManager fm,List<Fragment>list) {
             super(fm);
             mList=list;
-        }
-        @Override
-        public boolean isViewFromObject(View view, Object obj) {
-            return view == obj;
         }
 
         @Override

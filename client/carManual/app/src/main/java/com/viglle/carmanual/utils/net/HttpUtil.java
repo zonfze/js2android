@@ -1,30 +1,18 @@
 package com.viglle.carmanual.utils.net;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.viglle.carmanual.utils.LogUtil;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.FormBody;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import okio.BufferedSink;
 
 /**
  * Created by Administrator on 2016/4/19.
@@ -32,13 +20,36 @@ import okio.BufferedSink;
 public class HttpUtil {
 
     public static final String HOST_URL="http://192.168.16.198:8082/";
+    public static final String POST="POST";
+    public static final String GET="GET";
     private static OkHttpClient client = new OkHttpClient();
 
+    /**
+     *
+     * @param method 请求方式 默认POST;method=GET
+     * @param url
+     * @param params
+     * @param handler
+     */
+    public static void http(String method,String url,List<TwoValues<String,String>>params,HttpHandlerInterface handler){
+        if(method==null||method.equals("")||method.equalsIgnoreCase(HttpUtil.POST)){
+            httpPost(url,params,handler);
+        }else if(method.equalsIgnoreCase(HttpUtil.GET)){
+            httpGet(url,params,handler);
+        }else {
+            httpPost(url,params,handler);
+        }
+    }
 
     public static void httpGet(List<TwoValues<String,String>>params,HttpHandlerInterface handler){
         String url=getHost()+buildGetParams(params);
         httpGet(url,handler);
     }
+    public static void httpGet(String url,List<TwoValues<String,String>>params,HttpHandlerInterface handler){
+        url=url+buildGetParams(params);
+        httpGet(url,handler);
+    }
+
 
     public static void httpGet(String url,HttpHandlerInterface handler){
 
@@ -48,7 +59,6 @@ public class HttpUtil {
                 .build();
         sendRequest(request, handler);
     }
-
 
     public static void httpPost(List<TwoValues<String,String>>params,HttpHandlerInterface handler){
         String url=getHost();

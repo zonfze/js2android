@@ -3,15 +3,6 @@ package com.viglle.carmanual.action.model;
 /**
  * Created by Administrator on 2016/5/4.
  */
-public class ActionCloseNewModel extends BaseActionModel{
-    private String url;
-    public static final String URL="url";
+public class ActionCloseNewModel extends ActionUIModel{
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }

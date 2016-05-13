@@ -45,17 +45,18 @@ public class VgBottomNavPupopLayoutModel extends BaseViewModel{
         }
         return list;
     }
-    private static List<BottomNavPoupItemModel.ItemModel>parsorSubMenu(JSONArray array) throws JSONException {
-        List<BottomNavPoupItemModel.ItemModel> list = new ArrayList<>();
+    private static List<BottomNavPoupItemModel>parsorSubMenu(JSONArray array) throws JSONException {
+        List<BottomNavPoupItemModel> list = new ArrayList<>();
         if(array==null||array.length()<1){
             return list;
         }
         for(int i=0;i<array.length();i++){
             JSONObject object = array.getJSONObject(i);
-            BottomNavPoupItemModel.ItemModel model = new BottomNavPoupItemModel.ItemModel();
-            model.setSubLabelId(object.getString(BottomNavPoupItemModel.ItemModel.SUB_LABEL_ID));
-            model.setUrl(object.getString(BottomNavPoupItemModel.ItemModel.SUB_URL));
-            model.setSubtitle(object.getString(BottomNavPoupItemModel.ItemModel.SUBTITLE));
+            BottomNavPoupItemModel model = new BottomNavPoupItemModel();
+            model.setLabelId(object.getString(BottomNavPoupItemModel.LABEL_ID));
+            model.setUrl(object.getString(BottomNavPoupItemModel.URL));
+            model.setSubMenu(parsorSubMenu(object.getJSONArray(BottomNavPoupItemModel.SUB_MENU)));
+            model.setTitle(object.getString(BottomNavPoupItemModel.TAB_TEXT));
             list.add(model);
         }
         return list;

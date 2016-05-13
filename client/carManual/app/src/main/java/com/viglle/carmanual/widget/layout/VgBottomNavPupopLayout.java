@@ -5,6 +5,7 @@ package com.viglle.carmanual.widget.layout;
  */
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -31,12 +32,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.viglle.carmanual.base.BaseActivity;
+import com.viglle.carmanual.modules.user.LoginActivity;
 import com.viglle.carmanual.modules.fragments.BaseFragment;
 import com.viglle.carmanual.modules.fragments.CustomFragment;
 import com.viglle.carmanual.seletor.SelectorFactory;
 import com.viglle.carmanual.utils.AppUtil;
 import com.viglle.carmanual.utils.LogUtil;
 import com.viglle.carmanual.utils.ToastUtil;
+import com.viglle.carmanual.utils.net.TwoValues;
 import com.viglle.carmanual.widget.entity.BottomNavPoupItemModel;
 import com.viglle.carmanual.widget.entity.ViewTreeBean;
 import com.viglle.carmanual.widget.model.BaseViewModel;
@@ -133,30 +136,30 @@ public class VgBottomNavPupopLayout extends LinearLayout {
         model.setTitle("汽修人");
         list.add(model);
 
-        List<BottomNavPoupItemModel.ItemModel> subItemList=new ArrayList<>();
-        BottomNavPoupItemModel.ItemModel itemModel=new BottomNavPoupItemModel.ItemModel();
-        itemModel.setSubLabelId("101");
-        itemModel.setSubtitle("修车问答");
+        List<BottomNavPoupItemModel> subItemList=new ArrayList<>();
+        BottomNavPoupItemModel itemModel=new BottomNavPoupItemModel();
+        itemModel.setLabelId("101");
+        itemModel.setTitle("修车问答");
         subItemList.add(itemModel);//添加子菜单
 
-        itemModel=new BottomNavPoupItemModel.ItemModel();
-        itemModel.setSubLabelId("102");
-        itemModel.setSubtitle("修车生活");
+        itemModel=new BottomNavPoupItemModel();
+        itemModel.setLabelId("102");
+        itemModel.setTitle("修车生活");
         subItemList.add(itemModel);//添加子菜单
 
-        itemModel=new BottomNavPoupItemModel.ItemModel();
-        itemModel.setSubLabelId("103");
-        itemModel.setSubtitle("修车案例");
+        itemModel=new BottomNavPoupItemModel();
+        itemModel.setLabelId("103");
+        itemModel.setTitle("修车案例");
         subItemList.add(itemModel);//添加子菜单
 
-        itemModel=new BottomNavPoupItemModel.ItemModel();
-        itemModel.setSubLabelId("104");
-        itemModel.setSubtitle("修车趣事");
+        itemModel=new BottomNavPoupItemModel();
+        itemModel.setLabelId("104");
+        itemModel.setTitle("修车趣事");
         subItemList.add(itemModel);//添加子菜单
 
-        itemModel=new BottomNavPoupItemModel.ItemModel();
-        itemModel.setSubLabelId("105");
-        itemModel.setSubtitle("修车趣事");
+        itemModel=new BottomNavPoupItemModel();
+        itemModel.setLabelId("105");
+        itemModel.setTitle("修车趣事");
         subItemList.add(itemModel);//添加子菜单
 
         model.setSubMenu(subItemList);//将子菜单添加到一级菜单中
@@ -165,15 +168,15 @@ public class VgBottomNavPupopLayout extends LinearLayout {
         model=new BottomNavPoupItemModel();
         model.setLabelId("3");
         model.setTitle("我");
-        List<BottomNavPoupItemModel.ItemModel> subItemList1=new ArrayList<>();
-        BottomNavPoupItemModel.ItemModel itemModel1=new BottomNavPoupItemModel.ItemModel();
-        itemModel1.setSubLabelId("201");
-        itemModel1.setSubtitle("注册");
+        List<BottomNavPoupItemModel> subItemList1=new ArrayList<>();
+        BottomNavPoupItemModel itemModel1=new BottomNavPoupItemModel();
+        itemModel1.setLabelId("201");
+        itemModel1.setTitle("注册");
         subItemList1.add(itemModel1);//添加子菜单
 
-        itemModel1=new BottomNavPoupItemModel.ItemModel();
-        itemModel1.setSubLabelId("202");
-        itemModel1.setSubtitle("登录");
+        itemModel1=new BottomNavPoupItemModel();
+        itemModel1.setLabelId("202");
+        itemModel1.setTitle("登录");
         subItemList1.add(itemModel1);//添加子菜单
 
         model.setSubMenu(subItemList1);
@@ -322,9 +325,14 @@ public class VgBottomNavPupopLayout extends LinearLayout {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                BottomNavPoupItemModel.ItemModel itemModel = (BottomNavPoupItemModel.ItemModel) parent.getItemAtPosition(position);
-                ToastUtil.showToast(getContext(), itemModel.getSubtitle());
                 popupWindow.dismiss();
+                BottomNavPoupItemModel itemModel = (BottomNavPoupItemModel) parent.getItemAtPosition(position);
+                ToastUtil.showToast(getContext(), itemModel.getTitle());
+                Intent intent=new Intent(getContext(),LoginActivity.class);
+                intent.putExtra("url",itemModel.getUrl());
+                intent.putExtra("params", new ArrayList<TwoValues<String,String>>());
+                getContext().startActivity(intent);
+
             }
         });
         popupWindow.setFocusable(true);
@@ -385,7 +393,7 @@ public class VgBottomNavPupopLayout extends LinearLayout {
     private class MySubMenuAdapter extends BaseAdapter {
         Context mCtx;
 
-        private List<BottomNavPoupItemModel.ItemModel> mList = new ArrayList<>();
+        private List<BottomNavPoupItemModel> mList = new ArrayList<>();
         public MySubMenuAdapter(Context ctx) {
             mCtx=ctx;
         }
@@ -396,7 +404,7 @@ public class VgBottomNavPupopLayout extends LinearLayout {
         }
 
         @Override
-        public BottomNavPoupItemModel.ItemModel getItem(int position) {
+        public BottomNavPoupItemModel getItem(int position) {
             return mList.get(position);
         }
 
@@ -409,7 +417,7 @@ public class VgBottomNavPupopLayout extends LinearLayout {
         public View getView(int position, View convertView, ViewGroup parent) {
             TextView textView=new TextView(mCtx);
 
-            textView.setText(getItem(position).getSubtitle());
+            textView.setText(getItem(position).getTitle());
             textView.setGravity(Gravity.CENTER);
             textView.setTextSize(14);
             textView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,AppUtil.dip2px(mCtx,48)));
@@ -419,7 +427,7 @@ public class VgBottomNavPupopLayout extends LinearLayout {
             return textView;
         }
 
-        public void setSubDatas(List<BottomNavPoupItemModel.ItemModel> list){
+        public void setSubDatas(List<BottomNavPoupItemModel> list){
             if(list==null){
                 return;
             }

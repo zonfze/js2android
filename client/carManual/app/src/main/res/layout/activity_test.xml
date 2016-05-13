@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" android:id="@+id/container"></FrameLayout>
-    <com.viglle.carmanual.widget.layout.VgBottomNavPupopLayout
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <com.viglle.carmanual.widget.VgSwitchView android:layout_width="100dip" android:layout_centerInParent="true" android:gravity="center" android:layout_height="45dip"/>
 
-    </com.viglle.carmanual.widget.layout.VgBottomNavPupopLayout>
 </RelativeLayout>

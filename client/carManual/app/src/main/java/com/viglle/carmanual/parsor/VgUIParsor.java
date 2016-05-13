@@ -3,17 +3,20 @@ package com.viglle.carmanual.parsor;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.viglle.carmanual.utils.LogUtil;
 import com.viglle.carmanual.widget.model.BaseViewModel;
 import com.viglle.carmanual.widget.model.VgBottomNavModel;
 import com.viglle.carmanual.widget.model.VgBottomNavPupopLayoutModel;
 import com.viglle.carmanual.widget.model.VgButtonModel;
+import com.viglle.carmanual.widget.model.VgCheckBoxModel;
 import com.viglle.carmanual.widget.model.VgContentLayoutModel;
 import com.viglle.carmanual.widget.model.VgImageViewModel;
+import com.viglle.carmanual.widget.model.VgRadioButtonModel;
+import com.viglle.carmanual.widget.model.VgSwitchViewModel;
 import com.viglle.carmanual.widget.model.VgTextFieldModel;
 import com.viglle.carmanual.widget.model.VgTextViewModel;
 import com.viglle.carmanual.widget.model.VgViewPagerModel;
 import com.viglle.carmanual.widget.model.VgViewType;
-import com.viglle.carmanual.utils.LogUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,7 +29,22 @@ import java.util.List;
  * Created by Administrator on 2016/4/15.
  */
 public class VgUIParsor {
+    public static final String UI="ui";
+    public static BaseViewModel parserUIModelTree(Context context, JSONObject obj) throws JSONException {
+        if(obj==null){
+            return null;
+        }
+        LogUtil.log_w(">>>>"+obj.toString());
+        JSONObject rootObj = obj.getJSONObject(UI);
+        return parserModel(context,rootObj);
+    }
+
     public static BaseViewModel parserModel(Context context, JSONObject rootObj) throws JSONException {
+
+        if(!checkObj(rootObj)) {
+            return null;
+        }
+
         int view_type=0;
         try {
             view_type =Integer.parseInt(rootObj.getString(BaseViewModel.VIEW_TYPE));
@@ -77,11 +95,28 @@ public class VgUIParsor {
                 imageViewModel.setScaleType(rootObj.getString(VgImageViewModel.SCALE_TYPE));
                 return imageViewModel;
             case VgViewType.VgCheckBox:
-
-                return null;
+                VgCheckBoxModel checkBoxModel=new VgCheckBoxModel();
+                parsorCommonParams(rootObj, view_type, checkBoxModel);
+                checkBoxModel.setText(rootObj.getString(VgCheckBoxModel.TEXT));
+                checkBoxModel.setIsChecked(rootObj.getString(VgCheckBoxModel.ISCHECKED));
+                checkBoxModel.setText_align(rootObj.getString(VgCheckBoxModel.TEXT_ALIGN));
+                checkBoxModel.setText_color(rootObj.getString(VgCheckBoxModel.TEXT_COLOR));
+                checkBoxModel.setText_size(rootObj.getString(VgCheckBoxModel.TEXT_SIZE));
+                return checkBoxModel;
+            case VgViewType.VgRadioButton:
+                VgRadioButtonModel radioButtonModel=new VgRadioButtonModel();
+                parsorCommonParams(rootObj, view_type, radioButtonModel);
+                radioButtonModel.setText(rootObj.getString(VgRadioButtonModel.TEXT));
+                radioButtonModel.setIsChecked(rootObj.getString(VgCheckBoxModel.ISCHECKED));
+                radioButtonModel.setText_align(rootObj.getString(VgRadioButtonModel.TEXT_ALIGN));
+                radioButtonModel.setText_color(rootObj.getString(VgRadioButtonModel.TEXT_COLOR));
+                radioButtonModel.setText_size(rootObj.getString(VgRadioButtonModel.TEXT_SIZE));
+                return radioButtonModel;
             case VgViewType.VgSwitchView:
-
-                return null;
+                VgSwitchViewModel switchViewModel=new VgSwitchViewModel();
+                parsorCommonParams(rootObj, view_type, switchViewModel);
+                switchViewModel.setIsChecked(rootObj.getString(VgSwitchViewModel.ISCHECKED));
+                return switchViewModel;
             case VgViewType.VgListView:
 
                 return null;
@@ -112,7 +147,8 @@ public class VgUIParsor {
                 return navPupopLayoutModel;
             case VgViewType.VgViewPager:
                 VgViewPagerModel viewPagerModel=new VgViewPagerModel();
-                parsorCommonParams(rootObj,view_type,viewPagerModel);
+                viewPagerModel.setNoScroll(rootObj.getString(VgViewPagerModel.NOSCROLL));
+                parsorCommonParams(rootObj, view_type, viewPagerModel);
                 return viewPagerModel;
             case VgViewType.VgTopActionBar:
 
@@ -161,11 +197,14 @@ public class VgUIParsor {
         contentModel.setBg_normal_color(rootObj.getString(BaseViewModel.BG_NORMAL_COLOR));
         contentModel.setBg_focus_color(rootObj.getString(BaseViewModel.BG_FOCUS_COLOR));
         contentModel.setKey(rootObj.getString(BaseViewModel.KEY));
-        JSONObject actionLink=rootObj.getJSONObject(BaseViewModel.ACTION_LINK);
-        LogUtil.log_e("obj",actionLink.toString());
-        if(actionLink!=null){
-            contentModel.setActionLink(VgEventParsor.parsorActionLink(actionLink));
-        }
+        contentModel.setValidLink(VgValidParsor.parsorValidLink(rootObj));
+
+
+//        JSONObject actionLink=rootObj.getJSONObject(BaseViewModel.ACTION_LINK);
+//        LogUtil.log_e("obj",actionLink.toString());
+//        if(actionLink!=null){
+//            contentModel.setActionLink(VgEventParsor.parsorActionLink(actionLink));
+//        }
 
 //        contentModel.setGravity(rootObj.getString(BaseViewModel.GRAVITY));
 //        contentModel.setOrientation(rootObj.getString(BaseViewModel.ORIENTATION));
@@ -259,5 +298,16 @@ public class VgUIParsor {
         }
 
         return paddings;
+    }
+
+    private static boolean checkObj(JSONObject obj) {
+        if(obj==null){//参数合法校验
+            return false;
+        }
+        String objStr=obj.toString();
+        if(objStr.equals("{}")||objStr.equals("")||objStr.equals("null")){//参数合法校验
+            return false;
+        }
+        return true;
     }
 }

@@ -33,6 +33,16 @@ public class ViewTreeBean {
         return mViewMap.get(viewId);
     }
 
+    /**
+     * 通过泛型方法获取model
+     * @param viewId
+     * @param <T>
+     * @return
+     */
+    public <T extends BaseViewModel> T getCastViewModelById(Integer viewId){
+        return (T)getViewModelById(viewId);
+    }
+
     public View getViewById(Integer viewId){
         if(!mViewMap.containsKey(viewId)){
             return null;

@@ -4,14 +4,13 @@ import android.view.View;
 
 import com.viglle.carmanual.action.model.BaseEventModel;
 import com.viglle.carmanual.utils.AppUtil;
+import com.viglle.carmanual.validation.BaseValidModel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseViewModel{
-
-
-
+public class BaseViewModel implements Serializable{
 
     private String view_id;
     public static final String VIEW_ID="view_id";
@@ -66,6 +65,9 @@ public class BaseViewModel{
 
     private BaseEventModel actionLink;
     public static final String ACTION_LINK="actionLink";
+
+    private List<BaseValidModel> validLink;
+    public static final String VALID_LINK="validation";
 
 
 
@@ -422,4 +424,16 @@ public class BaseViewModel{
 //        }
 //        this.orientation = Integer.parseInt(orientation);
 //    }
+
+
+    public List<BaseValidModel> getValidLink() {
+        if(validLink==null){
+            return null ;
+        }
+        return validLink;
+    }
+
+    public void setValidLink(List<BaseValidModel> validLink) {
+        this.validLink = validLink;
+    }
 }

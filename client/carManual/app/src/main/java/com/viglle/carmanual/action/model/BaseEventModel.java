@@ -13,8 +13,8 @@ public abstract class BaseEventModel {
     private String eventType;
     public static final String EVENT_TYPE="event_type";
 
-    private List<BaseActionModel> link=new ArrayList<>();
-    public static final String LINK="link";
+    private List<BaseActionModel> actionLink=new ArrayList<>();
+    public static final String ACTION_LINK="actionLink";
 
     public int getEventType() {
         if(eventType==null||eventType.equals("")||eventType.equals("null")){
@@ -30,23 +30,23 @@ public abstract class BaseEventModel {
         this.eventType = eventType;
     }
 
-    public List<BaseActionModel> getLink() {
-        if(link==null){
+    public List<BaseActionModel> getActionLink() {
+        if(actionLink==null){
             return new ArrayList<>();
         }
-        return link;
+        return actionLink;
     }
 
-    public void setLink(List<BaseActionModel> link) {
+    public void setActionLink(List<BaseActionModel> link) {
         if(link==null||link.isEmpty()){
             return;
         }
-        if(this.link==null){
-            this.link=new ArrayList<>();
+        if(this.actionLink==null){
+            this.actionLink=new ArrayList<>();
         }
-        if(!this.link.isEmpty()){
-            this.link.clear();
+        if(!this.actionLink.isEmpty()){
+            this.actionLink.clear();
         }
-        this.link.addAll(link);
+        this.actionLink.addAll(link);
     }
 }

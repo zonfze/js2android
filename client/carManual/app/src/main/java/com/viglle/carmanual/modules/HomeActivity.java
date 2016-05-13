@@ -9,7 +9,7 @@ import com.viglle.carmanual.parsor.VgUIParsor;
 import com.viglle.carmanual.utils.net.HttpHandlerInterface;
 import com.viglle.carmanual.utils.net.HttpUtil;
 import com.viglle.carmanual.utils.net.TwoValues;
-import com.viglle.carmanual.viewfactory.ViewFactory;
+import com.viglle.carmanual.factory.ViewFactory;
 
 import org.json.JSONObject;
 
@@ -49,7 +49,7 @@ public class HomeActivity extends BaseActivity {
                         return;
                     }
                     JSONObject rootModelObj = rootObj.getJSONObject("data");
-                    BaseViewModel treeModel = VgUIParsor.parserModel(HomeActivity.this, rootModelObj);
+                    BaseViewModel treeModel = VgUIParsor.parserUIModelTree(HomeActivity.this, rootModelObj);
                     setContentView(ViewFactory.createViewTree(HomeActivity.this, treeModel, mViewTreeBean));
                 } catch (Exception e) {
                     e.printStackTrace();
