@@ -1,4 +1,4 @@
-var json_main_ui={
+var json_main_ui_1={
 		retCode:101,
 		msg:'请求成功',
 		data:{
@@ -10,8 +10,8 @@ var json_main_ui={
 				view_name:'VgContentLayout',
 				view_width:'1080',
 				view_height:'1920',
-				bg_normal_color:'#ffff0000',
-				bg_focus_color:'#ffff0000',
+				bg_normal_color:'#ffffffff',
+				bg_focus_color:'#ffffffff',
 				view_of:['-1','-1','-1','-1'],
 				view_paddings:['0','0','0','0'],
 				view_margins:['0','0','0','0'],
@@ -30,8 +30,9 @@ var json_main_ui={
 					view_name:'VgViewPager',
 					view_width:'1080',
 					view_height:'1920',
-					bg_normal_color:'#ffffff00',
-					bg_focus_color:'#ffffff00',
+					noScroll:'1',
+					bg_normal_color:'#ffffffff',
+					bg_focus_color:'#ffffffff',
 					view_of:['-1','-1','-1','2'],
 					view_paddings:['0','0','0','0'],
 					view_margins:['0','0','0','0'],
@@ -67,16 +68,25 @@ var json_main_ui={
 					res_key:'null',
 					childs:[],
 					datas:[
-						{labelid:'1',title:'常用资料',url:'http://192.168.16.198:8082/?code=panel',sub_menu:[]},
-						{labelid:'2',title:'汽修人',url:'http://192.168.16.198:8082/?code=welcome',sub_menu:[]},
-						{labelid:'3',title:'我',url:'http://192.168.16.198:8082/?code=panel',sub_menu:[]},
+						{labelid:'1',title:'常用资料',url:'http://192.168.16.198:8083/?code=home',sub_menu:[]},
+						{labelid:'2',title:'汽修人',url:'http://192.168.16.198:8083/?code=loginUI',
+							sub_menu:[
+								{labelid:'201',title:'汽修生活',url:'http://192.168.16.198:8083/?code=loginUI',sub_menu:[]},
+								{labelid:'202',title:'汽修案例',url:'http://192.168.16.198:8083/?code=panelUI',sub_menu:[]}
+					    ]},
+						{labelid:'3',title:'我',url:'http://192.168.16.198:8083/?code=home',
+							sub_menu:[
+								{labelid:'301',title:'登陆',url:'http://192.168.16.198:8083/?code=loginUI',sub_menu:[]},
+								{labelid:'302',title:'注册',url:'http://192.168.16.198:8083/?code=registerUI',sub_menu:[]}
+						]}
 					]
 				}]
-			}
-		}
+			},
+		eventLink:[]
+	}
 }
-function loadMain(req,res,DATA){
-	var string =JSON.stringify(json_main_ui);
+function loadMain1(req,res,DATA){
+	var string =JSON.stringify(json_main_ui_1);
 	res.end(string);
 }
-exports.loadMain=loadMain;
+exports.loadMain1=loadMain1;
